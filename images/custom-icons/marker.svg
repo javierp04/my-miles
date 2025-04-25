@@ -1,0 +1,20 @@
+<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg">
+ <title/>
+ <desc/>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="202" width="402" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="Page-1" fill-rule="evenodd" fill="none">
+   <g id="Social_icons">
+    <g id="Geo">
+     <circle stroke-width="0" stroke="#ffffff" r="30" id="Oval" fill="#1d00ff" cy="30" cx="30"/>
+     <path stroke-width="0" stroke="#ffffff" id="Combined-Shape" fill="#FFFFFF" d="m19.130341,29.259644c2.8508,6.696167 10.904175,18.740356 10.904175,18.740356c0,0 9.331299,-14.61145 11.241669,-19.691772l-0.012787,0c0.47644,-1.305664 0.736603,-2.717163 0.736603,-4.189941c0,-6.692749 -5.372589,-12.118286 -12,-12.118286c-6.627411,0 -12,5.425537 -12,12.118286c0,1.838135 0.405212,3.580566 1.130341,5.141357l0,0zm10.869659,1.740356c3.865997,0 7,-3.134033 7,-7c0,-3.865967 -3.134003,-7 -7,-7c-3.865997,0 -7,3.134033 -7,7c0,3.865967 3.134003,7 7,7l0,0z"/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
