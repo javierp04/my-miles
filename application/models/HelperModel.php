@@ -197,8 +197,7 @@ class HelperModel extends CI_Model
 	public function searchSmilesAPI($op_id, $orig, $dest, $fecha)
 	{		
 		//MULTI IP
-		$n = $this->getNextInstance($op_id);		
-		
+		$n = $this->getNextInstance($op_id);
 		session_write_close();
 		if ($n == 0) {
 			return $this->do_searchSmilesAPI($orig, $dest, $fecha);
@@ -235,16 +234,25 @@ class HelperModel extends CI_Model
 		$url = "https://api-air-flightsearch-green.smiles.com.br/v1/airlines/search?adults=1&cabinType=all&children=0&currencyCode=ARS&departureDate={$fecha}" . 
 				"&destinationAirportCode={$dest}&infants=0&isFlexibleDateChecked=false&originAirportCode={$orig}&tripType=2&forceCongener=true&r=ar";
 		
-		$headers = [			
-			'accept-language: es-ES,es;q=0.9',			
-			'referer: https://www.smiles.com.ar/',
-			'region: ARGENTINA',
-			'sec-ch-ua: "Google Chrome";v="135", "Not-A.Brand";v="8", "Chromium";v="135"',			
-			'sec-ch-ua-platform: "Windows"',			
-			'sec-fetch-mode: cors',			
-			'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
-			'x-api-key: aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw'
-		];
+		$headers = array(
+			"Accept: application/json, text/plain, */*",
+			"Accept-Encoding: gzip, deflate, br",
+			"Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6",
+			"Authorization: Bearer VZD07MTmEvCBpjLMZd8gG6Gjs942pjUXCCRG1BMivHXMlNHvqIk9Zo",
+			"Channel: Web",
+			"Language: es-ES",
+			"Origin: https://www.smiles.com.ar",
+			"Referer: https://www.smiles.com.ar/",
+			"Region: ARGENTINA",
+			"Sec-Ch-Ua: \"Not A(Brand\";v=\"99\", \"Google Chrome\";v=\"135\", \"Chromium\";v=\"135\"",
+			"Sec-Ch-Ua-Mobile: ?0",
+			"Sec-Ch-Ua-Platform: \"Windows\"",
+			"Sec-Fetch-Dest: empty",
+			"Sec-Fetch-Mode: cors",
+			"Sec-Fetch-Site: cross-site",
+			"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+			"X-Api-Key: aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw"
+		);
 
 		$ch = curl_init();
 		curl_setopt_array($ch, [
@@ -252,7 +260,8 @@ class HelperModel extends CI_Model
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_HTTPHEADER => $headers,
 			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 0
+			CURLOPT_SSL_VERIFYHOST => 0,
+			CURLOPT_ENCODING => ""
 		]);
 
 		$response = curl_exec($ch);

@@ -139,7 +139,7 @@ class Start extends CI_Controller
 		
 		//$r = $this->HelperModel->do_searchSmilesAPI($orig, $dest, $fecha);
 		//echo $r->response;
-
+		$info = $this->getInfo(1);
 		$url = 'https://api-air-flightsearch-green.smiles.com.br/v1/airlines/search';
 		$params = [
 			'adults' => 1,
@@ -159,33 +159,32 @@ class Start extends CI_Controller
 		// Construir la URL completa con los parámetros
 		$url .= '?' . http_build_query($params);
 
-		$headers = [
-			'accept: */*',
-			'accept-language: es-419,es-US;q=0.9,es;q=0.8,en-US;q=0.7,en;q=0.6',
-			'authorization: Bearer lw9orb0kiur8Yhunkb4y7SNYz25C2iamK5awiF7eWgQI6jK17jqbT9',
-			'channel: Web',
-			'content-type: application/json',
-			'language: es-ES',
-			'origin: http://miles.local',
-			'priority: u=1, i',
-			'referer: http://miles.local/',
-			'region: ARGENTINA',
-			'sec-ch-ua: "Not/A)Brand";v="99", "Chromium";v="115", "Google Chrome";v="115"',
-			'sec-ch-ua-mobile: ?0',
-			'sec-ch-ua-platform: "Windows"',
-			'sec-fetch-dest: empty',
-			'sec-fetch-mode: cors',
-			'sec-fetch-site: cross-site',
-			'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
-			'x-api-key: aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw',
-		];
-
+		$headers = array(
+			"Accept: application/json, text/plain, */*",
+			"Accept-Encoding: gzip, deflate, br",
+			"Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6",
+			"Authorization: Bearer {$info->bearer}",
+			"Channel: Web",
+			"Language: es-ES",
+			"Origin: https://www.smiles.com.ar",
+			"Referer: https://www.smiles.com.ar/",
+			"Region: ARGENTINA",
+			"Sec-Ch-Ua: \"Not A(Brand\";v=\"99\", \"Google Chrome\";v=\"{$info->v2}\", \"Chromium\";v=\"{$info->v2}\"",
+			"Sec-Ch-Ua-Mobile: ?0",
+			"Sec-Ch-Ua-Platform: \"Windows\"",
+			"Sec-Fetch-Dest: empty",
+			"Sec-Fetch-Mode: cors",
+			"Sec-Fetch-Site: cross-site",
+			"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{$info->v2}.0.0.0 Safari/537.36",
+			"X-Api-Key: aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw"
+		);
 		// Inicia una nueva sesión cURL
 		$ch = curl_init();
 
 		// Establecer la URL y otras opciones necesarias
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_ENCODING, '');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 15);
@@ -385,6 +384,32 @@ class Start extends CI_Controller
 		require_once APPPATH . "libraries/Mercadopago/Config/Config.php";
 		require_once APPPATH . "libraries/Mercadopago/Manager.php";
 		require_once APPPATH . "libraries/Mercadopago/MetaDataReader.php";
+	}
+
+	private function getInfo($number) {
+		$info = new stdClass();
+		switch ($number) {
+			case 1 :
+				$info->bearer = "VZD07MTmEvCBpjLMZd8gG6Gjs942pjUXCCRG1BMivHXMlNHvqIk9Zo";
+				$info->v1 = "99";
+				$info->v2 = "116";
+				break;
+			case 2 :
+				$info->bearer = "Oli5KF3NBhGA5EH2Vk7rjFg1GPggxZztXEvHlze6xQTyoHWRuKuAoB";
+				$info->v1 = "99";
+				$info->v2 = "118";
+				break;
+			case 3 :
+				$info->bearer = "Ewu1f2GHqGP1fp6cKr23pC2PFHJshtRWbMJ5ilRUMzayltsXYHlAu6";
+				$info->v1 = "99";
+				$info->v2 = "119";
+				break;
+			default :
+				$info->bearer = "6Lt2xsiGZwMXxTuH8JxKxItRrltUJG8rHm6k352kYS7UkOWA1pkec3";			
+				$info->v1 = "99";
+				$info->v2 = "120";
+		}
+		return $info;
 	}
 
 	// Llamada a la función para incluir todos los archivos PHP dentro del directorio

@@ -133,7 +133,7 @@
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
     <?
-    
+
     $this->view('templates/topbar');
     $this->view('templates/sidebar');
     ?>
@@ -252,7 +252,7 @@
                                                 <br>
                                                 <button id="btnSearch" type="button" class="btn bg-orange waves-effect btn-sm m-t-20">
                                                     <i class="material-icons">search</i>
-                                                </button>                                                
+                                                </button>
                                                 <? if ($rol_id == 1) : ?>
                                                     <button id="btnForce" type="button" class="btn bg-purple waves-effect btn-sm m-t-20">
                                                         <i class="material-icons">sync</i>
@@ -306,7 +306,7 @@
                                                 <span id="spProgress">0%</span>
                                             </div>
                                         </div>
-                                        <div class="preloader-generic text-center" id="searchingFlights">                                            
+                                        <div class="preloader-generic text-center" id="searchingFlights">
                                             <div class="preloader pl-size-xs">
                                                 <div class="spinner-layer pl-indigo">
                                                     <div class="circle-clipper left">
@@ -358,7 +358,7 @@
                                         <div class="col-xs-6 col-sm-4 col-md-1">
                                             <b>Duracion</b>
                                             <input type="number" class="form-control" id="txtDur" name="txtDur" pattern="[0-9]*">
-                                        </div>                                        
+                                        </div>
                                         <div class="col-xs-6 col-sm-4 col-md-1">
                                             <b>Asientos</b>
                                             <input type="number" class="form-control" id="txtAsi" name="txtAsi" pattern="[0-9]*">
@@ -388,7 +388,7 @@
                                 <hr>
                                 <div class="row clearfix">
                                     <div class="col-xs-12 col-md-6">
-                                        <button id="btnList" type="button" class="btn bg-indigo waves-effect btn-sm btn-list-type" data-value="1" <?=$btn_style?>>
+                                        <button id="btnList" type="button" class="btn bg-indigo waves-effect btn-sm btn-list-type" data-value="1" <?= $btn_style ?>>
                                             <i class="material-icons">list</i>
                                             <span>LISTA</span>
                                         </button>
@@ -396,9 +396,9 @@
                                             &nbsp;<button id="btnCalendar" type="button" class="btn bg-blue waves-effect btn-sm btn-list-type" data-value="3">
                                                 <i class="material-icons">calendar_today</i>
                                                 <span>CALENDARIO</span>
-                                            </button>                                        
-                                        <? endif; ?>                              
-                                        &nbsp;<button id="btnTrip" type="button" class="btn bg-blue waves-effect btn-sm btn-list-type" data-value="2" <?=$btn_style?>>
+                                            </button>
+                                        <? endif; ?>
+                                        &nbsp;<button id="btnTrip" type="button" class="btn bg-blue waves-effect btn-sm btn-list-type" data-value="2" <?= $btn_style ?>>
                                             <i class="material-icons">work</i>
                                             <span>ARMA TU VIAJE</span>
                                         </button>
@@ -523,8 +523,8 @@
         var finished = false;
         var cancelled = false;
         var fdesde;
-        var fhasta;        
-        var totalSearch = 0;        
+        var fhasta;
+        var totalSearch = 0;
         var ways;
         var retryLoc = 0;
         var retryServer = 0;
@@ -554,13 +554,13 @@
             var selectedIdaDay;
             var selectedVtaDay;
             //ACA IBA EL JS DE DIALOG
-            
+
         <? endif; ?>
 
         function updateResultPanel() {
-            if (currListType != 2) {                
+            if (currListType != 2) {
                 show_loading_flight_results(true);
-                updateResults();                
+                updateResults();
             } else {
                 calculateStay();
             }
@@ -583,20 +583,20 @@
             }
         }
 
-        $(function() {           
-            
+        $(function() {
+
             // if (window.location.hostname == 'my-miles.online') {
             //     clInstances = 1;
             //     srvInstances = 4;
             // }
             console.log("clInstances", clInstances);
-            console.log("srvInstances", srvInstances);            
+            console.log("srvInstances", srvInstances);
             $('#searchModal').on('hidden.bs.modal', function() {
                 stopped = true;
             });
 
             $('#btnFilter').click(function() {
-                updateResultPanel();
+                updateResultPanel();                
             });
 
             $(document).on('change', '.f-chk', function() {
@@ -618,11 +618,11 @@
                 selectListType(t);
                 if (stopped || finished) {
                     updateResults();
-                }              
+                }
             });
             $("#btnView").click(function() {
                 //Hacer que /trip sea por get y para fechas a results para que acote todo.
-                if (currSearchId > 0) {                    
+                if (currSearchId > 0) {
                     window.location.href = '<?= base_url() ?>view/results/' + currSearchId + '/trip';
                 }
             });
@@ -681,24 +681,24 @@
 
             // Establecer fechaDesde con la fecha de mañana
             <? if ($fdesde_sel == null) : ?>
-                var fechaDesde = new Date(hoy);                
+                var fechaDesde = new Date(hoy);
             <? else : ?>
                 var fechaDesde = new Date('<?= $fdesde_sel ?>');
-                
+
             <? endif; ?>
             fechaDesde.setDate(fechaDesde.getDate() + 1);
             fechaDesdeInput.datepicker('setDate', fechaDesde);
 
             // Calcular la fechaHasta sumando 2 días a la fecha de mañana (pasado mañana)
-             // Establecer fechaDesde con la fecha de mañana
-             <? if ($fhasta_sel == null) : ?>
+            // Establecer fechaDesde con la fecha de mañana
+            <? if ($fhasta_sel == null) : ?>
                 var fechaHasta = new Date(fechaDesde);
                 fechaHasta.setDate(fechaHasta.getDate() + 30); // Por defecto, 30 días después de "Desde"
             <? else : ?>
                 var fechaHasta = new Date('<?= $fhasta_sel ?>');
                 fechaHasta.setDate(fechaHasta.getDate() + 1);
             <? endif; ?>
-            
+
             // Establecer fechaHasta con la fecha calculada
             fechaHastaInput.datepicker('setDate', fechaHasta);
 
@@ -735,7 +735,7 @@
                 stopped = !stopped;
                 if (!stopped) {
                     //PLAY - CONTINUE                    
-                    startResumeSearch();                    
+                    startResumeSearch();
                 } else {
                     //PAUSE
                     $("#spPause").show();
@@ -747,7 +747,7 @@
                 stopped = true;
                 if (chk_vuelta_orig_st == "disabled") {
                     $("#chkVuelta").prop("disabled", true);
-                }                
+                }
                 $("#divSearching").hide();
                 $("#divFilters").hide();
                 $("#tabResults").html("");
@@ -768,7 +768,7 @@
                 });
 
                 $('#chkSM').change(function() {
-                    show_loading_flight_results(true);                    
+                    show_loading_flight_results(true);
                     if (stopped || finished)
                         updateResults();
                 });
@@ -822,12 +822,12 @@
                         showNoSessionMsg();
                         return;
                     }
-                    
+
                     var countDays = response.json.daysToUpdate.length;
                     ways = response.json.ways;
                     show_loading_search_info(false);
                     $("#frmFilters").hide();
-                    $("#tabSearchInfo").html(response.html);    
+                    $("#tabSearchInfo").html(response.html);
                 }
             });
         }
@@ -852,8 +852,8 @@
             vta_cal_date = null;
             selectedIdaDay = null;
             selectedVtaDay = null;
-            cancelled = false;            
-            
+            cancelled = false;
+
             t_idas = [];
             t_vueltas = [];
             excludeAirlines = $("#selExclude").val();
@@ -861,13 +861,13 @@
             prefilter = $("#chkPrefilter").prop("checked") ? 1 : 0
             onlyAirlines = $("#selOnly").val();
             txtOnly = $("#txtOnly").val();
-            
+
             $("#btnTrip").hide();
             <? if ($rol_id != 1) : ?>
                 $("#btnList").hide();
                 $("#btnView").hide();
             <? endif; ?>
-            
+
             $('input[type="checkbox"].f-chk:checked').each(function() {
                 var w = {};
                 var tmp = this.value.substr(1).split('-');
@@ -906,13 +906,13 @@
         }
 
         function do_startSearch() {
-                        
+
             data = {
                 idas: t_idas,
                 vueltas: t_vueltas,
                 fdesde: fdesde,
                 fhasta: fhasta,
-                is_ajax: 1                
+                is_ajax: 1
             };
 
             $.ajax({
@@ -926,14 +926,17 @@
                         return;
                     }
                     show_loading_search_info(false);
-                    if (response.status == "ok") {                                                
+                    if (response.status == "ok") {
                         totalSearch = response.daysToUpdate.length;
                         currProgress = totalSearch;
                         currSearchId = response.search_id;
                         $("#divFilters").show();
                         $("#tabSearchInfo").html("");
-                        if (totalSearch > 0) {                            
-                            currResponse = {search : response.daysToUpdate[0], progress : totalSearch};     
+                        if (totalSearch > 0) {
+                            currResponse = {
+                                search: response.daysToUpdate[0],
+                                progress: totalSearch
+                            };
                             <? if ($rol_id == 1) : ?>
                                 do_searchFlight();
                             <? else : ?>
@@ -960,13 +963,13 @@
                         });
                     }
                 }
-            });        
+            });
         }
 
         function searchFlight(req_need, req_left) {
             swal({
                 title: "Comenzar Búsqueda",
-                text: "Se consumirán " + req_need  + " créditos de los " + req_left + " disponibles del día, en la medida que se vaya avanzando en la búsqueda. ¿Desea Continuar?",
+                text: "Se consumirán " + req_need + " créditos de los " + req_left + " disponibles del día, en la medida que se vaya avanzando en la búsqueda. ¿Desea Continuar?",
                 icon: "info",
                 buttons: true
             }).then((willEnable) => {
@@ -976,7 +979,7 @@
             });
         }
 
-        function do_searchFlight() {            
+        function do_searchFlight() {
             //Total => Used only to check if > 1 to engage server search in case enabled.
             stopped = false;
             $("#divSearching").show();
@@ -987,19 +990,19 @@
             $('#infoDesde').html($('#fechaDesde').val().replace(/-/g, "/"));
             $('#infoHasta').html($('#fechaHasta').val().replace(/-/g, "/"));
             $("#spLeft").html("Calculando tiempo restante. . .");
-            tiempoInicio = new Date();                        
-            startResumeSearch();            
+            tiempoInicio = new Date();
+            startResumeSearch();
         }
 
-        function startResumeSearch() {               
+        function startResumeSearch() {
             updateProgress();
             updateButtons();
             //show_searching_flights(true);
-            for (i=0;i<clInstances;i++) {
+            for (i = 0; i < clInstances; i++) {
                 readResults(i);
             }
             if (totalSearch > 1 && use_server == 1) {
-                for (i=0;i<srvInstances;i++) {
+                for (i = 0; i < srvInstances; i++) {
                     readResults_srv(i);
                 }
             }
@@ -1011,7 +1014,7 @@
                 vueltas: t_vueltas,
                 fdesde: fdesde,
                 fhasta: fhasta,
-                is_ajax: 1                
+                is_ajax: 1
             };
             var tst = new Date().getTime();
             //console.log("client_search " + instance, "started");
@@ -1025,29 +1028,29 @@
                         showNoSessionMsg();
                         return;
                     }
-                    
+
                     if (response.search) {
-                        console.log(response);                        
+                        console.log(response);
                         currResponse = response;
                         var src = currResponse.search;
                         console.log("Client ", src.Orig, src.Dest, src.Fecha);
                         console.log("CLI Progress", response.progress);
                         currProgress = Math.min(response.progress, currProgress);
-                        var twait = instance * 2000 + (clInstances - 1) * 4000;                        
+                        var twait = instance * 2000 + (clInstances - 1) * 4000;
                         //var twait = instance * 0 + (clInstances - 1) * 0;                        
                         //console.log("client_search " + instance, "took " + (new Date().getTime() - tst)  / 1000);
                         setTimeout(() => searchSmilesAPI(src.Orig, src.Dest, src.Fecha, instance), twait);
-                    } 
+                    }
                     if (response.status == "finished") {
                         finishSearch();
                         console.log("Client", "status: finished");
                     }
                 }
             });
-            
+
         }
 
-        function readResults_srv(instance) {            
+        function readResults_srv(instance) {
             mile_price = $("#txtMP").val();
             var tst = new Date().getTime();
             //console.log("server_search " + instance, "started");
@@ -1055,15 +1058,15 @@
                 type: 'POST',
                 data: {
                     mile_price: mile_price,
-                    fdesde : fdesde,
-                    fhasta : fhasta,
+                    fdesde: fdesde,
+                    fhasta: fhasta,
                     idas: t_idas,
-                    vueltas: t_vueltas,                    
-                    excludeAirlines : excludeAirlines,
-                    txtExclude : txtExclude,
-                    prefilter : prefilter,
-                    onlyAirlines : onlyAirlines,
-                    txtOnly : txtOnly,
+                    vueltas: t_vueltas,
+                    excludeAirlines: excludeAirlines,
+                    txtExclude: txtExclude,
+                    prefilter: prefilter,
+                    onlyAirlines: onlyAirlines,
+                    txtOnly: txtOnly,
                     is_ajax: 1
                 },
                 dataType: 'json',
@@ -1091,20 +1094,20 @@
                             }
                             sendErrorLog("SERVER API ERROR", response.error);
                         }
-                    } 
+                    }
                     if (response.search) {
                         retryServer = 0;
-                        var src = response.search; 
+                        var src = response.search;
                         //console.log("server_search " + instance, "took " + (new Date().getTime() - tst) / 1000);
                         console.log("Server", src.Orig, src.Dest, src.Fecha);
                         console.log("SRV Progress", response.progress);
                         currProgress = Math.min(currProgress, response.progress);
                         if (!cancelled) {
-                            
-                            updateResults(); 
+
+                            updateResults();
                             updateProgress();
-                            
-                            if (stopped) {                                
+
+                            if (stopped) {
                                 updateButtons();
                             } else {
                                 readResults_srv(instance);
@@ -1112,14 +1115,14 @@
                         }
                     }
                     if (response.status == "finished") {
-                        console.log("Server", "Status: finished");                        
+                        console.log("Server", "Status: finished");
                         finishSearch();
                     }
                 }
             });
         }
 
-        function updateResults() {       
+        function updateResults() {
             var dur = $("#txtDur").val();
             var esc = $("#txtEsc").val();
             var asi = $("#txtAsi").val();
@@ -1141,7 +1144,7 @@
                     airline: air,
                     mile_price: mile_price,
                     idas: t_idas,
-                    sm : sm,
+                    sm: sm,
                     vueltas: t_vueltas,
                     is_ajax: 1
                 },
@@ -1156,18 +1159,18 @@
                     fillAirlines(response.airlines);
                     if (!cancelled) {
                         $("#tabResults").show();
-                        $("#tabResults").html(response.html); 
+                        $("#tabResults").html(response.html);
                         $("#spReqUsed").html(response.req_sent);
                         show_loading_flight_results(false);
                         if (finished || stopped) {
                             show_searching_flights(false);
                         }
-                        if (finished) {              
+                        if (finished) {
                             $("#btnList").show();
                             $("#btnView").show();
                             if (has_vueltas && t_vueltas.length > 0) {
-                                $("#btnTrip").show();                                
-                            }                            
+                                $("#btnTrip").show();
+                            }
                         }
                     }
                 }
@@ -1190,10 +1193,10 @@
                 url: '<?= base_url() . "smiles/ax_process_search" ?>',
                 type: 'POST',
                 data: {
-                    orig : orig,
-                    dest : dest,
-                    fecha : sdate,
-                    listType : currListType,
+                    orig: orig,
+                    dest: dest,
+                    fecha: sdate,
+                    listType: currListType,
                     flightList: JSON.stringify(flightList),
                     fdesde: fdesde,
                     fhasta: fhasta,
@@ -1206,12 +1209,12 @@
                     mile_price: mile_price,
                     idas: t_idas,
                     vueltas: t_vueltas,
-                    excludeAirlines : excludeAirlines,
-                    txtExclude : txtExclude,
-                    prefilter : prefilter,
-                    onlyAirlines : onlyAirlines,
-                    txtOnly : txtOnly,
-                    sm : sm,
+                    excludeAirlines: excludeAirlines,
+                    txtExclude: txtExclude,
+                    prefilter: prefilter,
+                    onlyAirlines: onlyAirlines,
+                    txtOnly: txtOnly,
+                    sm: sm,
                     is_ajax: 1
                 },
                 success: function(response) {
@@ -1229,7 +1232,7 @@
                         show_loading_flight_results(false);
                         if (response.res < 0) {
                             showConectionLostError();
-                        } else {                            
+                        } else {
                             doNextClientSearch(instance);
                         }
                     }
@@ -1307,31 +1310,31 @@
             });
         }
 
-        function doNextClientSearch(instance) {            
+        function doNextClientSearch(instance) {
             //SI NO ESTA EN DIALOG
             if (!is_dialog) {
-                updateProgress();                
-                if (stopped) {                    
+                updateProgress();
+                if (stopped) {
                     updateButtons();
                 }
             } else {
                 //DIALOG CODE
-                updateProgressDialog();                
+                updateProgressDialog();
             }
-            if (!stopped) { 
+            if (!stopped) {
                 readResults(instance);
             }
         }
 
-        function updateProgress() {            
-            
+        function updateProgress() {
+
             var toSearch = currResponse.search;
             var searchCount = totalSearch - currProgress;
             var tiempoTranscurrido = new Date() - tiempoInicio;
             var tiempoRestante = Math.ceil(tiempoTranscurrido / searchCount) * currProgress;
-            percent = searchCount > 0 ? Math.ceil(searchCount / totalSearch * 100) : "0";            
+            percent = searchCount > 0 ? Math.ceil(searchCount / totalSearch * 100) : "0";
             $('#divBar').attr('aria-valuenow', percent);
-            $("#divBar").css("width", percent + "%");            
+            $("#divBar").css("width", percent + "%");
             var currentDate = new Date(toSearch.Fecha);
             currentDate.setHours(currentDate.getHours() + 19);
             var dia = currentDate.getDate();
@@ -1341,16 +1344,16 @@
             $("#spCurr").html(toSearch.Orig + "-" + toSearch.Dest + " " + fechaFormateada + " (" + searchCount + "/" + totalSearch + ")");
             if (searchCount > 0) {
                 $('#spLeft').html('Tiempo restante: <b>' + formatTiempo(tiempoRestante) + '</b>');
-            }            
-            
+            }
+
         }
 
         function finishSearch() {
             stopped = true;
             finished = true;
             $("#divSearching").hide();
-            $("#tabSearchInfo").html("");            
-            updateResults();      
+            $("#tabSearchInfo").html("");
+            updateResults();
             updateButtons();
             $("#btnList").show();
             $("#btnView").show();
@@ -1368,8 +1371,8 @@
             show_searching_flights(!stopped);
             if (stopped) { //PAUSED
                 $("#iplay").show();
-                $("#btnPause").addClass("bg-green");      
-                $('#divBar').removeClass("active");          
+                $("#btnPause").addClass("bg-green");
+                $('#divBar').removeClass("active");
             } else { //RUNNING
                 $("#ipause").show();
                 $("#btnPause").addClass("bg-amber");
@@ -1378,14 +1381,14 @@
         }
 
         function searchSmilesAPI(orig, dest, fecha, instance) {
-            
+
             var url = "https://api-air-flightsearch-green.smiles.com.br/v1/airlines/search?adults=1&cabinType=all&children=0&currencyCode=ARS&departureDate=" +
                 fecha + "&destinationAirportCode=" + dest + "&infants=0&isFlexibleDateChecked=false&originAirportCode=" + orig + "&tripType=2&forceCongener=true&r=ar";
             //iI84zGW88ysDWg7xVgGQSHmG39Q5sIytl965Xoi5lvHjqmHr3b20j6
 
             var headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer lw9orb0kiur8Yhunkb4y7SNYz25C2iamK5awiF7eWgQI6jK17jqbT9", //<?=$auth?>",
+                "Authorization": "Bearer lw9orb0kiur8Yhunkb4y7SNYz25C2iamK5awiF7eWgQI6jK17jqbT9", //<?= $auth ?>",
                 "x-api-key": "aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw",
                 "region": "ARGENTINA",
                 "channel": "Web",
@@ -1396,11 +1399,11 @@
                 url: url,
                 type: 'GET',
                 headers: headers,
-                success: function(response) {                    
+                success: function(response) {
                     retryLoc = 0;
                     //MODIFICADO 2025
                     //var flights = JSON.parse(response).requestedFlightSegmentList[0].flightList;
-                    var flights = response.requestedFlightSegmentList[0].flightList;                    
+                    var flights = response.requestedFlightSegmentList[0].flightList;
                     var filteredFlightList = flights.filter(function(item) {
                         return item.tripType && item.tripType.indexOf("Award") !== -1;
                     });
@@ -1420,13 +1423,13 @@
             });
         }
 
-        function delSearchResponse() {            
+        function delSearchResponse() {
             data = {
                 idas: t_idas,
                 vueltas: t_vueltas,
                 fdesde: fdesde,
                 fhasta: fhasta,
-                is_ajax: 1,                
+                is_ajax: 1,
             };
 
             $.ajax({
@@ -1438,7 +1441,7 @@
                     if (response.nosession) {
                         showNoSessionMsg();
                         return;
-                    }                    
+                    }
                     if (response.delete == "ok") {
                         do_startSearch();
                     }
@@ -1520,6 +1523,7 @@
                 }
             });
         }
+
         function formatTiempo(tiempoRestante) {
             var segundos = Math.floor(tiempoRestante / 1000);
             var horas = Math.floor(segundos / 3600);
@@ -1553,7 +1557,7 @@
                 $("#loadingFlightResults").hide();
             }
         }
-
+       
     </script>
 </body>
 
