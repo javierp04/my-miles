@@ -93,33 +93,13 @@ class HelperModel extends CI_Model
 	{
 		session_write_close();
 		//MULTI IP		
-		$n = rand(0, 4);		
+		$n = rand(0, 4);	
+		//$n = 0;	
 		if ($n == 0) {
 			return $this->do_searchSmilesTax($uid, $fuid);
 		} else {
 			return $this->do_proxySmilesTax($n, $uid, $fuid);
 		}
-	}
-
-	private function do_proxySmilesTax($n, $uid, $fuid)
-	{
-		//esto se usa para ejecutar localmente llamando a servidores distintos y poder tener request paralelos
-		$url = "smiles{$n}.local/ProxyAPI/taxSearch/{$uid}/{$fuid}";
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$json = curl_exec($curl);
-		curl_close($curl);
-
-		$result = json_decode($json);
-		if (isset($result->log)) {
-			$log = $result->log;
-			$this->logAPICall($log->results, $log->orig, $log->dest, $log->fecha, $log->type, $log->sender, $log->res);
-		}
-		if (isset($result->error)) {
-			$er = $result->error;
-			$this->logError($er->type, $er->code, $er->input, $er->errorType, $er->sender, $er->response);
-		}
-		return $result->tax;
 	}
 
 	private function do_searchSmilesTax($uid, $fuid)
@@ -163,41 +143,32 @@ class HelperModel extends CI_Model
 		return $tax;
 	}
 
-	public function logError($type, $code, $input, $ex, $sender, $response)
+	private function do_proxySmilesTax($n, $uid, $fuid)
 	{
-		$e = new stdClass();
-		$e->Op_Id = $this->session->userdata("Op_Id");
+		//esto se usa para ejecutar localmente llamando a servidores distintos y poder tener request paralelos
+		$url = "smiles{$n}.local/ProxyAPI/taxSearch/{$uid}/{$fuid}";
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		$json = curl_exec($curl);
+		curl_close($curl);
 
-		session_write_close();
-
-		$e->Type = $type;
-		$e->Code = $code;
-
-		$e->Input = $input;
-		$e->Exception = $ex;
-		$e->Sender = $sender;
-		$e->Response = $response;
-		$e->IP = $_SERVER['REMOTE_ADDR'];
-		$this->db->insert("debug_error", $e);
-	}
-
-	public function saveOpError($ts, $er)
-	{
-		$e = new stdClass();
-		$e->Op_Id = $this->session->userdata("Op_Id");
-
-		session_write_close();
-
-		$e->TextStatus = $ts;
-		$e->ErrorThrown = $er;
-		$e->IP = $_SERVER['REMOTE_ADDR'];
-		$this->db->insert("operator_error", $e);
+		$result = json_decode($json);
+		if (isset($result->log)) {
+			$log = $result->log;
+			$this->logAPICall($log->results, $log->orig, $log->dest, $log->fecha, $log->type, $log->sender, $log->res);
+		}
+		if (isset($result->error)) {
+			$er = $result->error;
+			$this->logError($er->type, $er->code, $er->input, $er->errorType, $er->sender, $er->response);
+		}
+		return $result->tax;
 	}
 
 	public function searchSmilesAPI($op_id, $orig, $dest, $fecha)
 	{		
 		//MULTI IP
 		$n = $this->getNextInstance($op_id);
+		//$n = 0;
 		session_write_close();
 		if ($n == 0) {
 			return $this->do_searchSmilesAPI($orig, $dest, $fecha);
@@ -233,7 +204,7 @@ class HelperModel extends CI_Model
 		$sender = $_SERVER["HTTP_HOST"]; //LOG PURPOSES
 		$url = "https://api-air-flightsearch-green.smiles.com.br/v1/airlines/search?adults=1&cabinType=all&children=0&currencyCode=ARS&departureDate={$fecha}" . 
 				"&destinationAirportCode={$dest}&infants=0&isFlexibleDateChecked=false&originAirportCode={$orig}&tripType=2&forceCongener=true&r=ar";
-		
+				
 		$headers = array(
 			"Accept: application/json, text/plain, */*",
 			"Accept-Encoding: gzip, deflate, br",
@@ -325,5 +296,36 @@ class HelperModel extends CI_Model
 		$this->db->query($query);
 		$ret = $this->db->get_where("am_op_instance", array("Op_Id" => $op_id))->row();
 		return $ret->Curr_Inst;
+	}
+
+	public function logError($type, $code, $input, $ex, $sender, $response)
+	{
+		$e = new stdClass();
+		$e->Op_Id = $this->session->userdata("Op_Id");
+
+		session_write_close();
+
+		$e->Type = $type;
+		$e->Code = $code;
+
+		$e->Input = $input;
+		$e->Exception = $ex;
+		$e->Sender = $sender;
+		$e->Response = $response;
+		$e->IP = $_SERVER['REMOTE_ADDR'];
+		$this->db->insert("debug_error", $e);
+	}
+
+	public function saveOpError($ts, $er)
+	{
+		$e = new stdClass();
+		$e->Op_Id = $this->session->userdata("Op_Id");
+
+		session_write_close();
+
+		$e->TextStatus = $ts;
+		$e->ErrorThrown = $er;
+		$e->IP = $_SERVER['REMOTE_ADDR'];
+		$this->db->insert("operator_error", $e);
 	}
 }

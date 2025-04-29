@@ -178,6 +178,7 @@ class Start extends CI_Controller
 			"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{$info->v2}.0.0.0 Safari/537.36",
 			"X-Api-Key: aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw"
 		);
+		
 		// Inicia una nueva sesión cURL
 		$ch = curl_init();
 
